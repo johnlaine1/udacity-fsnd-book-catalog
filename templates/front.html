@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'navBar.html' %}
+{% include 'header.html' %}
+
+<div class="row">
+    <div class="left-side-bar">
+        <div class="well well-sm col-md-4">
+            {% include 'categoryList.html' %}
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="well well-sm col-md-8">
+            <h1>A list of the most popular books</h1>
+            <p>This is the front page</p>
+        </div> 
+    </div>
+</div>
+
+{% include 'footer.html' %}
+
+{% endblock %}
+
