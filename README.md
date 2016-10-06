@@ -1,2 +1,2 @@
 # Udacity Full Stack Developer course
-## Catalog project
+## Book Catalog project
