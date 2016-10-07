@@ -1,5 +1,7 @@
-<ul>
-    <li>Cat 1</li>
-    <li>Cat 2</li>
-    <li>Cat 3</li>
-</ul>
+{% if category_list %}
+    <ul>
+        {% for category in category_list %}
+            <li>{{ category.name }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}

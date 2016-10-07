@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request
 from flask import session as login_session
 import config
+import data
 
 
 app = Flask(__name__)
+
 
 
 # HOME ROUTE
@@ -21,7 +23,10 @@ def addBookCategory():
 
 @app.route('/book/category/<int:book_cat_id>')
 def showBookCategory(book_cat_id):
-    return render_template('showBookCategory.html')
+    return render_template('showBookCategory.html', 
+                            category_list = data.categories, 
+                            current_category = data.category,
+                            books = data.books)
 
 
 @app.route('/book/category/<int:book_cat_id>/edit')
