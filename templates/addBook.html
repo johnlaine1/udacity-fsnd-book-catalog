@@ -3,7 +3,13 @@
 {% block content %}
 {% include 'navBar.html' %}
 {% include 'header.html' %}
-addBook
+<form method="post" action="#">
+    <div class="form-group">
+        <label for="name">Book Name</label>
+        <input type="text" name="name" class="form-control" placeholder="Category Name">
+    </div>
+    <input type="submit" class="btn btn-default" value="Submit">
+</form>
 
 {% include 'footer.html' %}
 

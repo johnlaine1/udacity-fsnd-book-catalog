@@ -6,7 +6,7 @@ categories = [{'id': '1', 'name': 'Fiction'},
               {'id': '4', 'name': 'Real Estate'},
               {'id': '5', 'name': 'Health & Fitness'}]
               
-book = {'id': '1', 'category_id': '1', 'name': 'Ordinary Grace'}
+book = {'id': '1', 'name': 'Ordinary Grace'}
 
 books = [{'id': '1', 'name': 'Ordinary Grace'},
          {'id': '2', 'name': 'The Girl on The Train'},
