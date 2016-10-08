@@ -16,7 +16,7 @@
             {% if recent_books %}
                 <ul>
                 {% for book in recent_books %}
-                    <li>{{ book.name }}</li>
+                    <li>{{ book.name }}  --  {{ book.created }}</li>
                 {% endfor %}
                 </ul>
             {% endif %}

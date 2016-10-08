@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, desc
 from sqlalchemy.orm import sessionmaker
 from db_setup import Base, User, Category, Book
 
@@ -20,7 +20,7 @@ def create_categories(categories):
         create_category(**category)
 
 def get_category(id):
-	category = session.query(Category).filter_by(id == id).one()
+	category = session.query(Category).filter_by(id = id).one()
 	return category
 
 def get_categories():
@@ -66,12 +66,18 @@ def get_books_by_category(category_id):
 	books = session.query(Book).filter_by(category_id = category_id).all()
 	return books
         
-def update_book(book_id, name, description, price, image):
+def get_recent_books(num):
+	books = session.query(Book).order_by(desc(Book.created)).limit(num)
+	return books
+	
+	
+def update_book(book_id, name, author, description, price, image, category_id):
 	book = get_book(book_id)
 	book.name = name
 	book.description = description
 	book.price = price
 	book.image = image
+	book.category_id = category_id
 	session.add(book)
 	session.commit()
 	return book

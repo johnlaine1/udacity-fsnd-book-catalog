@@ -2,6 +2,7 @@
 {% if users %}
     {% for user in users %}
         <li>ID: {{ user.id }}</li>
+        <li>Created: {{ user.created }}</li>
         <li>Username: {{ user.name }}</li>
         <li>Email: {{ user.email }}</li>
         <li>Role: {{ user.role }}</li>
@@ -21,6 +22,7 @@
 {% if books %}
     {% for book in books %}
         <li>ID: {{ book.id }}</li>
+        <li>Created: {{ book.created }}</li>
         <li>Name: {{ book.name }}</li>
         <li>Author: {{ book.author }}</li>
         <li>Description: {{ book.description }}</li>
