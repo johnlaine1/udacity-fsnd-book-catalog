@@ -1,0 +1,32 @@
+<h2>Users</h2>
+{% if users %}
+    {% for user in users %}
+        <li>ID: {{ user.id }}</li>
+        <li>Username: {{ user.name }}</li>
+        <li>Email: {{ user.email }}</li>
+        <li>Role: {{ user.role }}</li>
+        <li>Picture: <img src="{{ user.picture }}" width="100" height="100"></li>
+    {% endfor %}
+{% endif %}
+
+<h2>Categories</h2>
+{% if categories %}
+    {% for cat in categories %}
+        <li>ID: {{ cat.id }}</li>
+        <li>Name: {{ cat.name }}</li>
+    {% endfor %}
+{% endif %}
+
+<h2>Books</h2>
+{% if books %}
+    {% for book in books %}
+        <li>ID: {{ book.id }}</li>
+        <li>Name: {{ book.name }}</li>
+        <li>Author: {{ book.author }}</li>
+        <li>Description: {{ book.description }}</li>
+        <li>Price: {{ book.price }}</li>
+        <li>Image: <img src="{{ book.image }}" width="100" height="200"></li>
+        <li>category_id: {{ book.category.id }}</li>
+        <li>User_id: {{ book.user.id }}</li>
+    {% endfor %}
+{% endif %}

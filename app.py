@@ -1,19 +1,19 @@
 from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
 from flask import session as login_session
+import db_controller
 import config
 import data
 
 
 app = Flask(__name__)
 
-
-
 # HOME ROUTE
 @app.route('/')
 @app.route('/books')
 def showBooksFront():
+    category_list = db_controller.get_categories()
     return render_template('front.html',
-                            category_list = data.categories,
+                            category_list = category_list,
                             recent_books = data.books)
 
 
@@ -26,8 +26,8 @@ def addBookCategory():
     if request.method == "GET":
         return render_template('addBookCategory.html', recent_books = data.books)
     else:
-        print request.form['name']
-        return redirect(url_for('showBookCategory', book_cat_id = data.category['id']))
+        new_category = db_controller.create_category(request.form['name'])
+        return redirect(url_for('showBookCategory', book_cat_id = new_category.id))
 
 
 # SHOW A CATEGORY
@@ -94,6 +94,13 @@ def deleteBook(book_id):
     else:
         return redirect(url_for('showBooksFront'))
 
+##### ADMIN ROUTES #####
+@app.route('/admin')
+def adminMain():
+    users = db_controller.get_users()
+    categories = db_controller.get_categories()
+    books = db_controller.get_books()
+    return render_template('admin.html', users = users, categories = categories, books = books)
 
 if __name__ == '__main__':
     app.debug = True
