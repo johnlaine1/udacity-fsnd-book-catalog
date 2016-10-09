@@ -11,9 +11,9 @@ app = Flask(__name__)
 @app.route('/')
 @app.route('/books')
 def showBooksFront():
-    category_list = db_controller.get_categories()
+    categories = db_controller.get_categories()
     books = db_controller.get_recent_books(5)
-    return render_template('front.html',category_list = category_list,
+    return render_template('front.html', categories = categories,
                             recent_books = books)
 
 ###### CATEGORY ROUTES #####
@@ -21,8 +21,10 @@ def showBooksFront():
 # ADD A CATEGORY
 @app.route('/book/category/add', methods=['GET', 'POST'])
 def addBookCategory():
+    categories = db_controller.get_categories()
+    
     if request.method == "GET":
-        return render_template('addBookCategory.html')
+        return render_template('addBookCategory.html', categories = categories)
     else:
         new_category = db_controller.create_category(request.form['name'])
         return redirect(url_for('showBookCategory', book_cat_id = new_category.id))
@@ -34,36 +36,41 @@ def showBookCategory(book_cat_id):
     categories = db_controller.get_categories()
     current_category = db_controller.get_category(book_cat_id)
     books = db_controller.get_books_by_category(book_cat_id)
+    
     return render_template('showBookCategory.html', 
-                            category_list = categories, 
+                            categories = categories, 
                             current_category = current_category,
                             books = books)
 
 # EDIT A CATEGORY
 @app.route('/book/category/<int:book_cat_id>/edit', methods=['GET', 'POST'])
 def editBookCategory(book_cat_id):
+    categories = db_controller.get_categories()
     category = db_controller.get_category(book_cat_id)
     
     if request.method == 'GET':
         return render_template('editBookCategory.html',
-                                category = category)
+                                category = category,
+                                categories = categories)
     if request.method == 'POST':
         category = db_controller.update_category(id = category.id, 
                                                  name = request.form['name'])
-        return redirect(url_for('showBookCategory', book_cat_id = category.id))
+        return redirect(url_for('showBookCategory', book_cat_id = category.id,
+                                 categories = categories))
 
 
 # DELETE A CATEGORY
 @app.route('/book/category/<int:book_cat_id>/delete', methods=['GET', 'POST'])
 def deleteBookCategory(book_cat_id):
+    categories = db_controller.get_categories()
     category = db_controller.get_category(book_cat_id)
     
     if request.method == "GET":
-        return render_template('deleteBookCategory.html',
-                                category = category)
+        return render_template('deleteBookCategory.html', category = category,
+                                categories = categories)
     else:
         db_controller.delete_category(category.id)
-        return redirect(url_for('showBooksFront'))
+        return redirect(url_for('showBooksFront', categories = categories))
 
 
 ##### BOOK ROUTES #####
@@ -85,13 +92,15 @@ def addBook():
             category_id = request.form['category'],
             # TODO: Need to set user id to login_session['user_id'] when system is created
             user_id = 1)
-        return redirect(url_for('showBook', book_id = book.id))
+        return redirect(url_for('showBook', book_id = book.id, categories = categories))
 
 # SHOW A BOOK
 @app.route('/book/<int:book_id>')
 def showBook(book_id):
+    categories = db_controller.get_categories()
     book = db_controller.get_book(book_id)
-    return render_template('showBook.html', book = book)
+    
+    return render_template('showBook.html', book = book, categories = categories)
 
 # EDIT A BOOK
 @app.route('/book/<int:book_id>/edit', methods=['GET', 'POST'])
@@ -112,18 +121,19 @@ def editBook(book_id):
             price = request.form['price'],
             image = request.form['image'],
             category_id = request.form['category'])
-        return redirect(url_for('showBook', book_id = book.id))
+        return redirect(url_for('showBook', book_id = book.id, categories = categories))
 
 # DELETE A BOOK
 @app.route('/book/<int:book_id>/delete', methods=['GET', 'POST'])
 def deleteBook(book_id):
+    categories = db_controller.get_categories()
     book = db_controller.get_book(book_id)
     
     if request.method == 'GET':
-        return render_template('deleteBook.html', book = book)
+        return render_template('deleteBook.html', book = book, categories = categories)
     if request.method == 'POST':
         book = db_controller.delete_book(book.id)
-        return redirect(url_for('showBooksFront'))
+        return redirect(url_for('showBooksFront', categories = categories))
 
 ##### ADMIN ROUTES #####
 @app.route('/admin')
