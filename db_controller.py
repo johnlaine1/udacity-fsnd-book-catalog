@@ -90,6 +90,15 @@ def delete_book(book_id):
 	return book
 	
 # USER RELATED FUNCTIONS
+def create_user_from_session(login_session):
+	  newUser = User(name = login_session['username'],
+	             email = login_session['email'],
+	             picture = login_session['picture'])
+	  session.add(newUser)
+	  session.commit()
+	  user = session.query(User).filter_by(email = login_session['email']).one()
+	  return user.id
+	  
 def create_user(name, email = '', picture = '', role = ''):
 	user = User(name = name, email = email, picture = picture, role = role)
 	session.add(user)
@@ -108,6 +117,13 @@ def get_users():
 	users = session.query(User).all()
 	return users
 	
+def get_user_id_from_email(email):
+	try:
+		user = session.query(User).filter_by(email = email).one()
+		return user.id
+	except:
+		return None
+		
 def update_user(user_id, name, email, picture, role):
 	user = get_user(user_id)
 	user.name = name
