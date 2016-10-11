@@ -261,9 +261,17 @@ def addBookCategory():
     if request.method == "GET":
         return render_template('addBookCategory.html', categories = categories)
     if request.method == 'POST':
-        new_category = db_controller.create_category(request.form['name'])
-        flash("A new category named '{}' has been created".format(new_category.name))
-        return redirect(url_for('showBookCategory', book_cat_id = new_category.id))
+        cat_name = request.form['name']
+        category_exists = db_controller.category_exists(cat_name)
+        
+        # Check if the category already exists.
+        if category_exists:
+            flash("Sorry, the category '{}' already exists.".format(cat_name))
+            return redirect(url_for('addBookCategory'))
+        else:
+            new_category = db_controller.create_category(cat_name)
+            flash("A new category named '{}' has been created".format(new_category.name))
+            return redirect(url_for('showBookCategory', book_cat_id = new_category.id))
 
 
 # SHOW A CATEGORY

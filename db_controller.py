@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, desc
+from sqlalchemy import create_engine, desc, func
 from sqlalchemy.orm import sessionmaker
 from db_setup import Base, User, Category, Book
 
@@ -41,6 +41,14 @@ def delete_category(id):
 	session.commit()
 	return category
 
+def category_exists(name):
+	try:
+		category = session.query(Category).filter(func.lower(Category.name) == func.lower(name)).all()
+	except:
+		category = None
+		
+	return category
+	
 # BOOK RELATED FUNCTIONS
 
 def create_book(name, author, description, price, image, category_id, user_id):
