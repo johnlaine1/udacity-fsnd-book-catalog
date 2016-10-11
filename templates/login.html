@@ -9,6 +9,9 @@
 
 
 {% block content %}
+{% include 'navBar.html' %}
+{% include 'header.html' %}
+
 <div class="login">
     <h2 class="text-center">Please Login</h2>
 </div>
@@ -37,6 +40,8 @@
 
 
 <div id="result"></div>
+
+{% include 'footer.html' %}
 {% endblock %}
 
 

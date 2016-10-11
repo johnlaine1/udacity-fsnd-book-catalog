@@ -19,6 +19,10 @@
                                 <li><a href="{{ url_for('showBookCategory', book_cat_id=category.id) }}">{{ category.name }}</a></li>
                             {% endfor %}
                         {% endif %}
+                        {% if session.username %}
+                            <li role="separator" class="divider"></li>
+                            <li><a href="{{ url_for('addBookCategory') }}">Add a category</a></li>
+                        {% endif %}
                     </ul>
                 </li>
             </ul>

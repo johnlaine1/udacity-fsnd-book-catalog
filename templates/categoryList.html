@@ -1,5 +1,5 @@
-<ul>
+<div class="list-group">
     {% for category in categories %}
-        <li>{{ category.name }}</li>
+  <a href="{{ url_for('showBookCategory', book_cat_id = category.id) }}" class="list-group-item">{{ category.name }}</a>
     {% endfor %}
-</ul>
+</div>

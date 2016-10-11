@@ -19,15 +19,6 @@ APPLICATION_NAME = "Catalog Application"
 
 client_secret = 'fS6OQdBzJcNvG5992g-EgOFd'
 
-# HOME ROUTE
-@app.route('/')
-@app.route('/books')
-def showBooksFront():
-    categories = db_controller.get_categories()
-    books = db_controller.get_recent_books(5)
-    return render_template('front.html', categories = categories,
-                            recent_books = books)
-                            
 
 ##### AUTHENTICATION #####
 # Disconnect based on provider
@@ -46,11 +37,12 @@ def disconnect():
         del login_session['picture']
         del login_session['user_id']
         del login_session['provider']
-        flash("You have successfully been logged out.")
+        flash("You have successfully logged out.")
         return redirect(url_for('showBooksFront'))
     else:
         flash("You were not logged in")
         return redirect(url_for('showBooksFront'))
+        
 
 @app.route('/fbconnect', methods=['POST'])
 def fbconnect():
@@ -108,6 +100,7 @@ def fbconnect():
   output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
   flash("you are now logged in as %s" % login_session['username'])
   return output  
+  
 
 @app.route('/fbdisconnect')
 def fbdisconnect():
@@ -201,7 +194,7 @@ def gconnect():
     output += '<img src="'
     output += login_session['picture']
     output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
-    flash("you are now logged in as %s" % login_session['username'])
+    flash("You are now logged in as %s" % login_session['username'])
     return output
 
 # Disconnect - Revoke a current user's token and reset their login_session.
@@ -229,23 +222,40 @@ def gdisconnect():
     response = make_response(json.dumps('Failed to revoke token for given user.', 400))
     response.headers['Content-Type'] = 'application/json'
     return response
+    
 
 # Create anti-forgery state token
 @app.route('/login')
 def showLogin():
+    categories = db_controller.get_categories()
+    
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in xrange(32))
     login_session['state'] = state
-    # return "The current session state is %s" % login_session['state']
-    return render_template('login.html', STATE=state)
+    return render_template('login.html', categories = categories, STATE=state)
     
     
+##### HOME ROUTE #####
+@app.route('/')
+@app.route('/books')
+def showBooksFront():
+    categories = db_controller.get_categories()
+    books = db_controller.get_recent_books(5)
+    return render_template('front.html', categories = categories,
+                            recent_books = books)
+
+
 ##### CATEGORY ROUTES #####
 
 # ADD A CATEGORY
 @app.route('/book/category/add', methods=['GET', 'POST'])
 def addBookCategory():
     categories = db_controller.get_categories()
+    
+    # Redirect to login if user is not logged in.
+    if 'username' not in login_session:
+        flash('You must first login before creating a new category')
+        return redirect('/login')
     
     if request.method == "GET":
         return render_template('addBookCategory.html', categories = categories)
@@ -302,6 +312,11 @@ def deleteBookCategory(book_cat_id):
 def addBook():
     categories = db_controller.get_categories()
     
+    # Redirect to login if user is not logged in.
+    if 'username' not in login_session:
+        flash('You must first login before creating a new book')
+        return redirect('/login')
+        
     if request.method == 'GET':
         return render_template('addBook.html', categories = categories)
     if request.method == 'POST':
