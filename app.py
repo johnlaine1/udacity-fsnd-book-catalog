@@ -258,11 +258,11 @@ def addBookCategory():
     if 'username' not in login_session:
         flash('Please login first')
         return redirect('/login')
-    
     if request.method == "GET":
         return render_template('addBookCategory.html', categories = categories)
-    else:
+    if request.method == 'POST':
         new_category = db_controller.create_category(request.form['name'])
+        flash("A new category named '{}' has been created".format(new_category.name))
         return redirect(url_for('showBookCategory', book_cat_id = new_category.id))
 
 
@@ -277,6 +277,7 @@ def showBookCategory(book_cat_id):
                             categories = categories, 
                             current_category = current_category,
                             books = books)
+                            
 
 # EDIT A CATEGORY
 @app.route('/book/category/<int:book_cat_id>/edit', methods=['GET', 'POST'])
@@ -295,6 +296,7 @@ def editBookCategory(book_cat_id):
     if request.method == 'POST':
         category = db_controller.update_category(id = category.id, 
                                                  name = request.form['name'])
+        flash("The category '{}' has been updated.".format(category.name))
         return redirect(url_for('showBookCategory', book_cat_id = category.id))
 
 
@@ -309,11 +311,12 @@ def deleteBookCategory(book_cat_id):
         flash('Please login first')
         return redirect('/login')
         
-    if request.method == "GET":
+    if request.method == 'GET':
         return render_template('deleteBookCategory.html', category = category,
                                 categories = categories)
-    else:
-        db_controller.delete_category(category.id)
+    if request.method == 'POST':
+        deleted_category = db_controller.delete_category(category.id)
+        flash("The category '{}' has been deleted.".format(deleted_category.name))
         return redirect(url_for('showBooksFront'))
 
 
@@ -339,8 +342,8 @@ def addBook():
             price = request.form['price'],
             image = request.form['image'],
             category_id = request.form['category'],
-            # TODO: Need to set user id to login_session['user_id'] when system is created
-            user_id = 1)
+            user_id = login_session['user_id'])
+        flash("A new book named '{}' has been created.".format(book.name))
         return redirect(url_for('showBook', book_id = book.id))
 
 # SHOW A BOOK
@@ -361,7 +364,6 @@ def editBook(book_id):
     if 'username' not in login_session:
         flash('Please login first!')
         return redirect('/login')
-        
     if login_session['user_id'] != book.user_id:
         flash('Only the user who created a book can edit it!')
         return redirect(url_for('showBook', book_id = book.id))
@@ -378,6 +380,7 @@ def editBook(book_id):
             price = request.form['price'],
             image = request.form['image'],
             category_id = request.form['category'])
+        flash("The book named '{}' has been updated".format(book.name))
         return redirect(url_for('showBook', book_id = book.id))
 
 # DELETE A BOOK
@@ -390,7 +393,6 @@ def deleteBook(book_id):
     if 'username' not in login_session:
         flash('Please login first')
         return redirect('/login')
-    
     if login_session['user_id'] != book.user_id:
         flash('Only the user who created a book can edit it!')
         return redirect(url_for('showBook', book_id = book.id))
@@ -399,6 +401,7 @@ def deleteBook(book_id):
         return render_template('deleteBook.html', book = book, categories = categories)
     if request.method == 'POST':
         book = db_controller.delete_book(book.id)
+        flash("The book named '{}' has been deleted".format(book.name))
         return redirect(url_for('showBooksFront'))
 
 ##### ADMIN ROUTES #####
