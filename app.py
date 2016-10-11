@@ -116,7 +116,6 @@ def gconnect():
         return response
     # Obtain authorization code
     code = request.data
-    print code
     try:
         # Upgrade the authorization code into a credentials object
         oauth_flow = flow_from_clientsecrets('oauth_credentials/client_secret_google.json', scope='')
@@ -360,14 +359,17 @@ def editBook(book_id):
     
     # Redirect to login if user is not logged in.
     if 'username' not in login_session:
-        flash('Please login first')
+        flash('Please login first!')
         return redirect('/login')
+        
+    if login_session['user_id'] != book.user_id:
+        flash('Only the user who created a book can edit it!')
+        return redirect(url_for('showBook', book_id = book.id))
         
     if request.method == 'GET':
         return render_template('editBook.html', book = book, categories = categories)
+        
     if request.method == 'POST':
-        print request.form['category']
-        print request.form['name']
         book = db_controller.update_book(
             book_id = book.id,
             name = request.form['name'],
@@ -388,6 +390,10 @@ def deleteBook(book_id):
     if 'username' not in login_session:
         flash('Please login first')
         return redirect('/login')
+    
+    if login_session['user_id'] != book.user_id:
+        flash('Only the user who created a book can edit it!')
+        return redirect(url_for('showBook', book_id = book.id))
         
     if request.method == 'GET':
         return render_template('deleteBook.html', book = book, categories = categories)
