@@ -346,6 +346,7 @@ def addBook():
         flash("A new book named '{}' has been created.".format(book.name))
         return redirect(url_for('showBook', book_id = book.id))
 
+
 # SHOW A BOOK
 @app.route('/book/<int:book_id>')
 def showBook(book_id):
@@ -353,6 +354,7 @@ def showBook(book_id):
     book = db_controller.get_book(book_id)
     
     return render_template('showBook.html', book = book, categories = categories)
+
 
 # EDIT A BOOK
 @app.route('/book/<int:book_id>/edit', methods=['GET', 'POST'])
@@ -383,6 +385,7 @@ def editBook(book_id):
         flash("The book named '{}' has been updated".format(book.name))
         return redirect(url_for('showBook', book_id = book.id))
 
+
 # DELETE A BOOK
 @app.route('/book/<int:book_id>/delete', methods=['GET', 'POST'])
 def deleteBook(book_id):
@@ -403,6 +406,7 @@ def deleteBook(book_id):
         book = db_controller.delete_book(book.id)
         flash("The book named '{}' has been deleted".format(book.name))
         return redirect(url_for('showBooksFront'))
+
 
 ##### ADMIN ROUTES #####
 @app.route('/admin')
