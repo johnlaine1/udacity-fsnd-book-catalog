@@ -250,7 +250,7 @@ def showBooksFront():
 ##### CATEGORY ROUTES #####
 
 # ADD A CATEGORY
-@app.route('/book/category/add', methods=['GET', 'POST'])
+@app.route('/books/categories/add', methods=['GET', 'POST'])
 def addBookCategory():
     categories = db_controller.get_categories()
     
@@ -275,7 +275,7 @@ def addBookCategory():
 
 
 # SHOW A CATEGORY
-@app.route('/book/category/<int:book_cat_id>')
+@app.route('/books/categories/<int:book_cat_id>')
 def showBookCategory(book_cat_id):
     categories = db_controller.get_categories()
     current_category = db_controller.get_category(book_cat_id)
@@ -288,7 +288,7 @@ def showBookCategory(book_cat_id):
                             
 
 # EDIT A CATEGORY
-@app.route('/book/category/<int:book_cat_id>/edit', methods=['GET', 'POST'])
+@app.route('/books/categories/<int:book_cat_id>/edit', methods=['GET', 'POST'])
 def editBookCategory(book_cat_id):
     categories = db_controller.get_categories()
     category = db_controller.get_category(book_cat_id)
@@ -309,7 +309,7 @@ def editBookCategory(book_cat_id):
 
 
 # DELETE A CATEGORY
-@app.route('/book/category/<int:book_cat_id>/delete', methods=['GET', 'POST'])
+@app.route('/books/categories/<int:book_cat_id>/delete', methods=['GET', 'POST'])
 def deleteBookCategory(book_cat_id):
     categories = db_controller.get_categories()
     category = db_controller.get_category(book_cat_id)
@@ -331,7 +331,7 @@ def deleteBookCategory(book_cat_id):
 ##### BOOK ROUTES #####
 
 # ADD A BOOK
-@app.route('/book/add', methods=['GET', 'POST'])
+@app.route('/books/add', methods=['GET', 'POST'])
 def addBook():
     categories = db_controller.get_categories()
     
@@ -356,7 +356,7 @@ def addBook():
 
 
 # SHOW A BOOK
-@app.route('/book/<int:book_id>')
+@app.route('/books/<int:book_id>')
 def showBook(book_id):
     categories = db_controller.get_categories()
     book = db_controller.get_book(book_id)
@@ -365,7 +365,7 @@ def showBook(book_id):
 
 
 # EDIT A BOOK
-@app.route('/book/<int:book_id>/edit', methods=['GET', 'POST'])
+@app.route('/books/<int:book_id>/edit', methods=['GET', 'POST'])
 def editBook(book_id):
     categories = db_controller.get_categories()
     book = db_controller.get_book(book_id)
@@ -395,7 +395,7 @@ def editBook(book_id):
 
 
 # DELETE A BOOK
-@app.route('/book/<int:book_id>/delete', methods=['GET', 'POST'])
+@app.route('/books/<int:book_id>/delete', methods=['GET', 'POST'])
 def deleteBook(book_id):
     categories = db_controller.get_categories()
     book = db_controller.get_book(book_id)
@@ -415,6 +415,50 @@ def deleteBook(book_id):
         flash("The book named '{}' has been deleted".format(book.name))
         return redirect(url_for('showBooksFront'))
 
+
+##### API ENDPOINTS #####
+
+# RETURN JSON FOR AN INDIVIDUAL BOOK
+@app.route('/books/<int:book_id>/JSON')
+def bookJSON(book_id):
+    book = db_controller.get_book(book_id)
+    return jsonify(book = book.serialize)
+    
+    
+# RETURN JSON FOR ALL BOOKS
+@app.route('/books/JSON')
+def booksJSON():
+    books = db_controller.get_books()
+    return jsonify(books = [book.serialize for book in books])
+    
+    
+# RETURN JSON FOR AN INDIVIDUAL CATEGORY
+@app.route('/books/categories/<int:book_cat_id>/JSON')
+def categoryJSON(book_cat_id):
+    category = db_controller.get_category(book_cat_id)
+    return jsonify(category = category.serialize)
+
+
+# RETURN JSON FOR ALL CATEGORIES
+@app.route('/books/categories/JSON')
+def categoriesJSON():
+    categories = db_controller.get_categories()
+    return jsonify(categories = [cat.serialize for cat in categories])
+    
+    
+# RETURN JSON FOR AN INDIVIDUAL USER
+@app.route('/users/<int:user_id>/JSON')
+def userJSON(user_id):
+    user = db_controller.get_user(user_id)
+    return jsonify(user = user.serialize)
+    
+    
+# RETURN JSON FOR ALL USERS
+@app.route('/users/JSON')
+def usersJSON():
+    users = db_controller.get_users()
+    return jsonify(users = [user.serialize for user in users])
+    
 
 ##### ADMIN ROUTES #####
 @app.route('/admin')

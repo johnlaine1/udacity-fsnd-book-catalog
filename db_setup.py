@@ -15,11 +15,33 @@ class User(Base):
     picture = Column(String(250))
     role = Column(String(250))
     
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'id'        : self.id,
+            'created'   : self.created,
+            'name'      : self.name,
+            'email'     : self.email,
+            'picture'   : self.picture,
+            'role'      : self.role
+        }
+    
+    
 class Category(Base):
     __tablename__ = 'category'
    
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
+    
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'id'    : self.id,
+            'name'  : self.name
+        }
+
 
 class Book(Base):
     __tablename__ = 'book'
@@ -36,6 +58,20 @@ class Book(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
 
+    @property
+    def serialize(self):
+       """Return object data in easily serializeable format"""
+       return {
+           'id'         : self.id,
+           'created'    : self.created,
+           'name'       : self.name,
+           'author'     : self.author,
+           'description': self.description,
+           'price'      : self.price,
+           'image'      : self.image,
+           'category'   : self.category.name,
+           'user'       : self.user.name
+       }
 
 engine = create_engine('sqlite:///catalog.db')
  
