@@ -13,12 +13,6 @@ import config
 
 app = Flask(__name__)
 
-CLIENT_ID = json.loads(
-    open('client_secret_google.json', 'r').read())['web']['client_id']
-APPLICATION_NAME = "Catalog Application"
-
-client_secret = 'fS6OQdBzJcNvG5992g-EgOFd'
-
 
 ##### AUTHENTICATION #####
 # Disconnect based on provider
@@ -57,8 +51,8 @@ def fbconnect():
   # Exchange client token for long-lived server-side token with 
   # GET /oauth/access_token?grant_type=fb_exchange_token&
   #   client_id={app-id}&client_secret={app-secret}&fb_exchange_token={short-lived-token}
-  app_id = json.loads(open('client_secret_fb.json', 'r').read())['web']['app_id']
-  app_secret = json.loads(open('client_secret_fb.json', 'r').read())['web']['app_secret']
+  app_id = json.loads(open('oauth_credentials/client_secret_fb.json', 'r').read())['web']['app_id']
+  app_secret = json.loads(open('oauth_credentials/client_secret_fb.json', 'r').read())['web']['app_secret']
   url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id={}&client_secret={}&fb_exchange_token={}'.format(app_id, app_secret, access_token)
   h = httplib2.Http()
   result = h.request(url, 'GET')[1]
@@ -112,6 +106,9 @@ def fbdisconnect():
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
+    client_id = json.loads(
+        open('oauth_credentials/client_secret_google.json', 'r').read())['web']['client_id']
+        
     # Validate state token
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter.'), 401)
@@ -122,7 +119,7 @@ def gconnect():
     print code
     try:
         # Upgrade the authorization code into a credentials object
-        oauth_flow = flow_from_clientsecrets('client_secret_google.json', scope='')
+        oauth_flow = flow_from_clientsecrets('oauth_credentials/client_secret_google.json', scope='')
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
@@ -152,7 +149,8 @@ def gconnect():
         return response
 
     # Verify that the access token is valid for this app.
-    if result['issued_to'] != CLIENT_ID:
+    
+    if result['issued_to'] != client_id:
         response = make_response(
             json.dumps("Token's client ID does not match app's."), 401)
         print "Token's client ID does not match app's."
@@ -228,11 +226,15 @@ def gdisconnect():
 @app.route('/login')
 def showLogin():
     categories = db_controller.get_categories()
+    google_client_id = json.loads(
+        open('oauth_credentials/client_secret_google.json', 'r').read())['web']['client_id']
+    fb_app_id = json.loads(open('oauth_credentials/client_secret_fb.json', 'r').read())['web']['app_id']
     
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in xrange(32))
     login_session['state'] = state
-    return render_template('login.html', categories = categories, STATE=state)
+    return render_template('login.html', categories = categories, STATE = state,
+                            google_client_id = google_client_id, fb_app_id = fb_app_id)
     
     
 ##### HOME ROUTE #####

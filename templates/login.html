@@ -20,7 +20,7 @@
 <div class="google-sign-in" id="signInButton">
     <span class="g-signin"
         data-scope="openid email"
-        data-clientid="903050578313-gk1tuk3v2efm2fqurfr98j756mi00cqj.apps.googleusercontent.com"
+        data-clientid="{{ google_client_id }}"
         data-redirecturi="postmessage"
         data-accesstype="offline"
         data-cookiepolicy="single_host_origin"
@@ -82,7 +82,7 @@
     <script>
       window.fbAsyncInit = function() {
       FB.init({
-        appId      : '1592133297755561',
+        appId      : '{{ fb_app_id }}',
         cookie     : true,  // enable cookies to allow the server to access 
                             // the session
         xfbml      : true,  // parse social plugins on this page
