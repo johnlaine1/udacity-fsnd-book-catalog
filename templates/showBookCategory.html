@@ -5,14 +5,9 @@
 {% include 'header.html' %}
 
 <div class="row">
-    <div class="left-side-bar">
-        <div class="well well-sm col-md-4">
-            {% include 'categoryList.html' %}
-        </div>
-    </div>
     <div class="main-content">
-        <div class="well well-sm col-md-8">
-            <h1>Books in the category: {{ current_category.name }}</h1>
+        <div class="well well-sm ">
+            <h1 class="text-center" >{{ current_category.name | upper }}</h1>
             {% if books %}
                 <ul>
                 {% for book in books %}

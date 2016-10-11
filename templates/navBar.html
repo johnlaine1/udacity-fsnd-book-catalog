@@ -25,6 +25,9 @@
                         {% endif %}
                     </ul>
                 </li>
+                {% if session.username %}
+                    <li><a href="{{ url_for('addBook') }}">Add a Book</a></li>
+                {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if session.username %}

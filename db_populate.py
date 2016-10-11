@@ -5,8 +5,8 @@ user = {'name': 'johnlaine',
         'picture': 'https://ichef.bbci.co.uk/news/660/cpsprodpb/025B/production/_85730600_monkey2.jpg',
         'role': 'admin'}
 
-users = [{'name': 'johnlaine', 
-        'email': 'john.laine@example.com', 
+users = [{'name': 'admin', 
+        'email': 'admin@example.com', 
         'picture': 'https://ichef.bbci.co.uk/news/660/cpsprodpb/025B/production/_85730600_monkey2.jpg',
         'role': 'admin'},
         {'name': 'billmurray', 
@@ -33,11 +33,6 @@ books = [{'name': 'Ordinary Grace',
           'category_id': 1,
           'user_id': 1}]
           
-        #  {'name': 'The Girl on The Train'},
-        #  {'name': 'Python for Beginners'},
-        #  {'name': 'How to Buy a Multiplex'},
-        #  {'name': 'Body for life'}]
-         
 
 if __name__ == '__main__':
     db_controller.create_users(users)
