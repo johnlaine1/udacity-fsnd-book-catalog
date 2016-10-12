@@ -3,5 +3,26 @@ body {
 }
 
 .thumbnail {
-    min-height: 350px;
+    height: 400px;
 }
+
+.thumbnail-img {
+    height: 250px;
+    width: 140px;
+}
+
+.book-thumbnail{
+    height: 180px;
+    width: 100px;
+}
+
+.book-display-img,
+.book-display-details{
+    margin-top: 25px;
+}
+
+.book-display-img img {
+    height: 200px;
+    width: 200px;
+}
+

@@ -1,21 +1,31 @@
 {% extends 'base.html' %}
 
+{% block title %}Catalog App | {{ current_category.name }}{% endblock %}
+
 {% block content %}
 {% include 'navBar.html' %}
 {% include 'header.html' %}
 
 <div class="row">
+    <div class="left-side-bar">
+        <div class="well well-sm col-md-4">
+            {% include 'categoryList.html' %}
+        </div>
+    </div>
     <div class="main-content">
-        <div class="well well-sm ">
-            <h1 class="text-center" >{{ current_category.name | upper }}</h1>
+        <div class="well well-sm col-md-8">
+            <h1 class="text-center">{{ current_category.name }}</h1>
             {% if books %}
-                <ul>
+                <div class="row">
                 {% for book in books %}
-                    <li>{{ book.name }}</li>
+                    <div class="col-sm-6 col-md-4">
+                    {% include 'bookThumbnail.html' %}
+                    </div>
                 {% endfor %}
-                </ul>
+                </div>
+            {% else %}
+                <p>There are no books in this category yet.</p>
             {% endif %}
-            
         </div> 
     </div>
 </div>
@@ -23,3 +33,4 @@
 {% include 'footer.html' %}
 
 {% endblock %}
+
