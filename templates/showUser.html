@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Catalog App | {{ user.name }} {% endblock %}
+
+{% block content %}
+{% include 'navBar.html' %}
+{% include 'header.html' %}
+
+<div class="row">
+    <h2 class="text-center">{{ user.name }}</h2>
+</div>
+<div class="row">
+    <div class="user-display-img col-md-2">
+        <img src="{{ user.picture }}">
+    </div>
+    <div class="user-display-details col-md-4">
+        <table class="table">
+            <tr>
+                <td>Name: </td>
+                <td> {{ user.name }}</td>
+            </tr>            
+            <tr>
+                <td>Member Since: </td>
+                <td> {{ user.created }}</td>
+            </tr>
+            <tr>
+                <td>Email: </td>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <td>Role: </td>
+                <td>{{ user.role }}</td>
+            </tr>
+
+        </table>
+    </div>
+</div>
+
+
+
+{% include 'footer.html' %}
+
+{% endblock %}

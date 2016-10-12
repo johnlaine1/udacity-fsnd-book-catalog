@@ -30,7 +30,7 @@
                     <ul class="dropdown-menu">
                         {% if users %}
                             {% for user in users %}
-                                <li><a href="#">{{ user.name }}</a></li>
+                                <li><a href="{{ url_for('showUser', user_id = user.id) }}">{{ user.name }}</a></li>
                             {% endfor %}
                         {% endif %}
                     </ul>

@@ -23,6 +23,17 @@ body {
 
 .book-display-img img {
     height: 200px;
-    width: 200px;
+    width: 175px;
 }
+
+.user-display-img,
+.user-display-details{
+    margin-top: 25px;
+}
+
+.user-display-img img {
+    height: 200px;
+    width: 175px;
+}
+
 

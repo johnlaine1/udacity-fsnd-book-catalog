@@ -20,6 +20,7 @@ def inject_users():
     categories = db_controller.get_categories()
     return dict(users = users, categories = categories)
     
+    
 ##### AUTHENTICATION #####
 # Disconnect based on provider
 @app.route('/disconnect')
@@ -410,7 +411,14 @@ def deleteBook(book_id):
         flash("The book named '{}' has been deleted".format(book.name))
         return redirect(url_for('showBooksFront'))
 
-
+##### USER ROUTES #####
+@app.route('/users/<int:user_id>')
+def showUser(user_id):
+    user = db_controller.get_user(user_id)
+    
+    return render_template('showUser.html', user = user)
+    
+    
 ##### API ENDPOINTS #####
 
 # RETURN JSON FOR AN INDIVIDUAL BOOK
