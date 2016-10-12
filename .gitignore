@@ -1,3 +1,4 @@
 *.pyc
 oauth_credentials/client_secret_fb.json
 oauth_credentials/client_secret_google.json
+catalog.db
