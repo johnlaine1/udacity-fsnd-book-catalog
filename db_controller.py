@@ -76,7 +76,10 @@ def get_books_by_category(category_id):
 	return books
         
 def get_recent_books(num):
-	books = session.query(Book).order_by(desc(Book.created)).limit(num)
+	try:
+		books = session.query(Book).order_by(desc(Book.created)).limit(num).all()
+	except:
+		books = None
 	return books
 	
 	

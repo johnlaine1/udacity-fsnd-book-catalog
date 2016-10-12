@@ -1,10 +1,5 @@
 import db_controller
 
-user = {'name': 'johnlaine', 
-        'email': 'john.laine5896@gmail.com', 
-        'picture': 'https://ichef.bbci.co.uk/news/660/cpsprodpb/025B/production/_85730600_monkey2.jpg',
-        'role': 'admin'}
-
 users = [{'name': 'admin', 
         'email': 'admin@example.com', 
         'picture': 'https://ichef.bbci.co.uk/news/660/cpsprodpb/025B/production/_85730600_monkey2.jpg',
@@ -14,7 +9,6 @@ users = [{'name': 'admin',
         'picture': 'https://s-media-cache-ak0.pinimg.com/236x/01/59/40/01594057534c60f94af3165f26d85629.jpg',
         'role': 'user'}]
         
-category = {'name': 'Science Fiction'}
 
 categories = [{'name': 'Fiction'},
               {'name': 'Romance'},
@@ -22,8 +16,8 @@ categories = [{'name': 'Fiction'},
               {'name': 'Real Estate'},
               {'name': 'Health & Fitness'}]
               
-# name, author, description, price, image, category_id, user_id
-book = {'name': 'Ordinary Grace'}
+# Keep in mind that a category_id and user_id must already exist. They will be
+# created above and numbered sequentially.
 
 books = [{'name': 'Ordinary Grace',
           'author': 'William Kent Krueger',
