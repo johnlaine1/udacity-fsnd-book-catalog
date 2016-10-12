@@ -1,0 +1,9 @@
+{% if books %}
+<div class="row">
+    {% for book in books %}
+        <div class="col-sm-6 col-md-4">
+            {% include 'bookThumbnail.html' %}
+        </div>
+    {% endfor %}
+</div>
+{% endif %}

@@ -3,10 +3,13 @@
 {% block content %}
 {% include 'navBar.html' %}
 {% include 'header.html' %}
+
 <h1>Are you sure that you want to permanently delete the book: {{ book.name }}?</h1>
 <form method="post" action="#">
-    <input type="submit" class="btn btn-danger" value="Delete">
-    <a href="#">Cancel</a>
+    <p>
+        <input type="submit" class="btn btn-danger" value="Delete">
+        <a href="{{ url_for('showBook', book_id = book.id) }}" class="btn btn-default">Cancel</a>   
+    </p>
 </form>
 {% include 'footer.html' %}
 

@@ -243,8 +243,9 @@ def showLogin():
 def showBooksFront():
     categories = db_controller.get_categories()
     books = db_controller.get_recent_books(5)
+    
     return render_template('front.html', categories = categories,
-                            recent_books = books)
+                            books = books)
 
 
 ##### CATEGORY ROUTES #####

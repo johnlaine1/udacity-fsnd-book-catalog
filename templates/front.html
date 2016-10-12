@@ -14,15 +14,16 @@
     </div>
     <div class="main-content">
         <div class="well well-sm col-md-8">
-            <h1>Recently added books</h1>
-            {% if recent_books %}
-                <ul>
-                {% for book in recent_books %}
-                    <li>{{ book.name }}  --  {{ book.created }}</li>
+            <h1 class="text-center">Recently added books</h1>
+            {% if books %}
+                <div class="row">
+                {% for book in books %}
+                    <div class="col-sm-6 col-md-4">
+                    {% include 'bookThumbnail.html' %}
+                    </div>
                 {% endfor %}
-                </ul>
+                </div>
             {% endif %}
-            
         </div> 
     </div>
 </div>
