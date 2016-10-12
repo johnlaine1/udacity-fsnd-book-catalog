@@ -13,7 +13,13 @@ import config
 
 app = Flask(__name__)
 
-
+# ADD VARIABLES TO ALL TEMPLATES
+@app.context_processor
+def inject_users():
+    users = db_controller.get_users()
+    categories = db_controller.get_categories()
+    return dict(users = users, categories = categories)
+    
 ##### AUTHENTICATION #####
 # Disconnect based on provider
 @app.route('/disconnect')
@@ -225,7 +231,6 @@ def gdisconnect():
 # Create anti-forgery state token
 @app.route('/login')
 def showLogin():
-    categories = db_controller.get_categories()
     google_client_id = json.loads(
         open('oauth_credentials/client_secret_google.json', 'r').read())['web']['client_id']
     fb_app_id = json.loads(open('oauth_credentials/client_secret_fb.json', 'r').read())['web']['app_id']
@@ -233,7 +238,7 @@ def showLogin():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in xrange(32))
     login_session['state'] = state
-    return render_template('login.html', categories = categories, STATE = state,
+    return render_template('login.html', STATE = state,
                             google_client_id = google_client_id, fb_app_id = fb_app_id)
     
     
@@ -253,14 +258,13 @@ def showBooksFront():
 # ADD A CATEGORY
 @app.route('/books/categories/add', methods=['GET', 'POST'])
 def addBookCategory():
-    categories = db_controller.get_categories()
     
     # Redirect to login if user is not logged in.
     if 'username' not in login_session:
         flash('Please login first')
         return redirect('/login')
     if request.method == "GET":
-        return render_template('addBookCategory.html', categories = categories)
+        return render_template('addBookCategory.html')
     if request.method == 'POST':
         cat_name = request.form['name']
         category_exists = db_controller.category_exists(cat_name)
@@ -278,12 +282,10 @@ def addBookCategory():
 # SHOW A CATEGORY
 @app.route('/books/categories/<int:book_cat_id>')
 def showBookCategory(book_cat_id):
-    categories = db_controller.get_categories()
     current_category = db_controller.get_category(book_cat_id)
     books = db_controller.get_books_by_category(book_cat_id)
     
-    return render_template('showBookCategory.html', 
-                            categories = categories, 
+    return render_template('showBookCategory.html',
                             current_category = current_category,
                             books = books)
                             
@@ -291,7 +293,6 @@ def showBookCategory(book_cat_id):
 # EDIT A CATEGORY
 @app.route('/books/categories/<int:book_cat_id>/edit', methods=['GET', 'POST'])
 def editBookCategory(book_cat_id):
-    categories = db_controller.get_categories()
     category = db_controller.get_category(book_cat_id)
     
     # Redirect to login if user is not logged in.
@@ -300,8 +301,7 @@ def editBookCategory(book_cat_id):
         return redirect('/login')
         
     if request.method == 'GET':
-        return render_template('editBookCategory.html', category = category,
-                                categories = categories)
+        return render_template('editBookCategory.html', category = category)
     if request.method == 'POST':
         category = db_controller.update_category(id = category.id, 
                                                  name = request.form['name'])
@@ -312,7 +312,6 @@ def editBookCategory(book_cat_id):
 # DELETE A CATEGORY
 @app.route('/books/categories/<int:book_cat_id>/delete', methods=['GET', 'POST'])
 def deleteBookCategory(book_cat_id):
-    categories = db_controller.get_categories()
     category = db_controller.get_category(book_cat_id)
     
     # Redirect to login if user is not logged in.
@@ -321,8 +320,7 @@ def deleteBookCategory(book_cat_id):
         return redirect('/login')
         
     if request.method == 'GET':
-        return render_template('deleteBookCategory.html', category = category,
-                                categories = categories)
+        return render_template('deleteBookCategory.html', category = category)
     if request.method == 'POST':
         deleted_category = db_controller.delete_category(category.id)
         flash("The category '{}' has been deleted.".format(deleted_category.name))
@@ -334,7 +332,6 @@ def deleteBookCategory(book_cat_id):
 # ADD A BOOK
 @app.route('/books/add', methods=['GET', 'POST'])
 def addBook():
-    categories = db_controller.get_categories()
     
     # Redirect to login if user is not logged in.
     if 'username' not in login_session:
@@ -342,7 +339,7 @@ def addBook():
         return redirect('/login')
         
     if request.method == 'GET':
-        return render_template('addBook.html', categories = categories)
+        return render_template('addBook.html')
     if request.method == 'POST':
         book = db_controller.create_book(
             name = request.form['name'],
@@ -359,16 +356,14 @@ def addBook():
 # SHOW A BOOK
 @app.route('/books/<int:book_id>')
 def showBook(book_id):
-    categories = db_controller.get_categories()
     book = db_controller.get_book(book_id)
     
-    return render_template('showBook.html', book = book, categories = categories)
+    return render_template('showBook.html', book = book)
 
 
 # EDIT A BOOK
 @app.route('/books/<int:book_id>/edit', methods=['GET', 'POST'])
 def editBook(book_id):
-    categories = db_controller.get_categories()
     book = db_controller.get_book(book_id)
     
     # Redirect to login if user is not logged in.
@@ -380,7 +375,7 @@ def editBook(book_id):
         return redirect(url_for('showBook', book_id = book.id))
         
     if request.method == 'GET':
-        return render_template('editBook.html', book = book, categories = categories)
+        return render_template('editBook.html', book = book)
         
     if request.method == 'POST':
         book = db_controller.update_book(
@@ -398,7 +393,6 @@ def editBook(book_id):
 # DELETE A BOOK
 @app.route('/books/<int:book_id>/delete', methods=['GET', 'POST'])
 def deleteBook(book_id):
-    categories = db_controller.get_categories()
     book = db_controller.get_book(book_id)
     
     # Redirect to login if user is not logged in.
@@ -410,7 +404,7 @@ def deleteBook(book_id):
         return redirect(url_for('showBook', book_id = book.id))
         
     if request.method == 'GET':
-        return render_template('deleteBook.html', book = book, categories = categories)
+        return render_template('deleteBook.html', book = book)
     if request.method == 'POST':
         book = db_controller.delete_book(book.id)
         flash("The book named '{}' has been deleted".format(book.name))

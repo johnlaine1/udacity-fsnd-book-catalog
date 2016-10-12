@@ -25,6 +25,16 @@
                         {% endif %}
                     </ul>
                 </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Users <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        {% if users %}
+                            {% for user in users %}
+                                <li><a href="#">{{ user.name }}</a></li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </li>
                 {% if session.username %}
                     <li><a href="{{ url_for('addBook') }}">Add a Book</a></li>
                 {% endif %}
