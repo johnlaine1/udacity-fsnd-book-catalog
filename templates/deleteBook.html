@@ -8,9 +8,9 @@
 <form method="post" action="#">
     <p>
         <input type="submit" class="btn btn-danger" value="Delete">
-        <a href="{{ url_for('showBook', book_id = book.id) }}" class="btn btn-default">Cancel</a>   
+        <a href="{{ url_for('showBook', book_id = book.id) }}" class="btn btn-default">Cancel</a>
     </p>
 </form>
-{% include 'footer.html' %}
 
+{% include 'footer.html' %}
 {% endblock %}

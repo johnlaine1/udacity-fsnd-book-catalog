@@ -2,14 +2,14 @@ import db_controller
 
 users = [
     {
-        'name': 'admin', 
-        'email': 'admin@example.com', 
+        'name': 'admin',
+        'email': 'admin@example.com',
         'picture': 'https://ichef.bbci.co.uk/news/660/cpsprodpb/025B/production/_85730600_monkey2.jpg',
         'role': 'admin'
     },
     {
-        'name': 'johndoe', 
-        'email': 'john.doe@example.com', 
+        'name': 'johndoe',
+        'email': 'john.doe@example.com',
         'picture': 'https://s-media-cache-ak0.pinimg.com/236x/01/59/40/01594057534c60f94af3165f26d85629.jpg',
         'role': 'user'
     },
@@ -31,9 +31,9 @@ users = [
         'picture': 'https://yt3.ggpht.com/-_IXzYFNWU8U/AAAAAAAAAAI/AAAAAAAAAAA/6tXWVmD0E64/s900-c-k-no-mo-rj-c0xffffff/photo.jpg',
         'role': 'user'
     },
-    
+
 ]
-        
+
 
 categories = [
     {'name': 'Cookbooks'},
@@ -42,7 +42,7 @@ categories = [
     {'name': 'Health & Fitness'},
     {'name': 'Real Estate'}
 ]
-              
+
 # Keep in mind that a category_id and user_id must already exist. They will be
 # created above and numbered sequentially.
 
@@ -273,7 +273,7 @@ books = [
         'user_id': 5
     },
 ]
-          
+
 
 if __name__ == '__main__':
     db_controller.create_users(users)

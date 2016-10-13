@@ -3,6 +3,7 @@
 {% block content %}
 {% include 'navBar.html' %}
 {% include 'header.html' %}
+
 <div class="row">
     <h2 class="text-center">{{ book.name }}</h2>
 </div>
@@ -15,7 +16,7 @@
             <tr>
                 <td>Author: </td>
                 <td> {{ book.author }}</td>
-            </tr>            
+            </tr>
             <tr>
                 <td>Category: </td>
                 <td> {{ book.category.name }}</td>
@@ -28,7 +29,6 @@
                 <td>Added By: </td>
                 <td>{{ book.user.name }}</td>
             </tr>
-
         </table>
     </div>
     <div class="col-md-7">
@@ -49,5 +49,4 @@
 {% endif %}
 
 {% include 'footer.html' %}
-
 {% endblock %}

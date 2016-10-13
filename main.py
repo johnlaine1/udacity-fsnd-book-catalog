@@ -19,9 +19,10 @@ def inject_users():
     users = db_controller.get_users()
     categories = db_controller.get_categories()
     return dict(users = users, categories = categories)
-    
-    
+
+
 ##### AUTHENTICATION #####
+
 # Disconnect based on provider
 @app.route('/disconnect')
 def disconnect():
@@ -43,7 +44,7 @@ def disconnect():
     else:
         flash("You were not logged in")
         return redirect(url_for('showBooksFront'))
-        
+
 
 @app.route('/fbconnect', methods=['POST'])
 def fbconnect():
@@ -55,7 +56,7 @@ def fbconnect():
 
   access_token = request.data
 
-  # Exchange client token for long-lived server-side token with 
+  # Exchange client token for long-lived server-side token with
   # GET /oauth/access_token?grant_type=fb_exchange_token&
   #   client_id={app-id}&client_secret={app-secret}&fb_exchange_token={short-lived-token}
   app_id = json.loads(open('oauth_credentials/client_secret_fb.json', 'r').read())['web']['app_id']
@@ -100,8 +101,8 @@ def fbconnect():
   output += login_session['picture']
   output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
   flash("you are now logged in as %s" % login_session['username'])
-  return output  
-  
+  return output
+
 
 @app.route('/fbdisconnect')
 def fbdisconnect():
@@ -115,7 +116,7 @@ def fbdisconnect():
 def gconnect():
     client_id = json.loads(
         open('oauth_credentials/client_secret_google.json', 'r').read())['web']['client_id']
-        
+
     # Validate state token
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter.'), 401)
@@ -155,7 +156,7 @@ def gconnect():
         return response
 
     # Verify that the access token is valid for this app.
-    
+
     if result['issued_to'] != client_id:
         response = make_response(
             json.dumps("Token's client ID does not match app's."), 401)
@@ -170,7 +171,7 @@ def gconnect():
                                  200)
         response.headers['Content-Type'] = 'application/json'
         return response
-    
+
     # Store the access token in the session for later use.
     login_session['provider'] = 'google'
     login_session['credentials'] = credentials.access_token
@@ -235,21 +236,21 @@ def showLogin():
     google_client_id = json.loads(
         open('oauth_credentials/client_secret_google.json', 'r').read())['web']['client_id']
     fb_app_id = json.loads(open('oauth_credentials/client_secret_fb.json', 'r').read())['web']['app_id']
-    
+
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in xrange(32))
     login_session['state'] = state
     return render_template('login.html', STATE = state,
                             google_client_id = google_client_id, fb_app_id = fb_app_id)
-    
-    
+
+
 ##### HOME ROUTE #####
 @app.route('/')
 @app.route('/books')
 def showBooksFront():
     categories = db_controller.get_categories()
     books = db_controller.get_recent_books(5)
-    
+
     return render_template('front.html', categories = categories,
                             books = books)
 
@@ -259,7 +260,7 @@ def showBooksFront():
 # ADD A CATEGORY
 @app.route('/books/categories/add', methods=['GET', 'POST'])
 def addBookCategory():
-    
+
     # Redirect to login if user is not logged in.
     if 'username' not in login_session:
         flash('Please login first')
@@ -269,7 +270,7 @@ def addBookCategory():
     if request.method == 'POST':
         cat_name = request.form['name']
         category_exists = db_controller.category_exists(cat_name)
-        
+
         # Check if the category already exists.
         if category_exists:
             flash("Sorry, the category '{}' already exists.".format(cat_name))
@@ -285,26 +286,26 @@ def addBookCategory():
 def showBookCategory(book_cat_id):
     current_category = db_controller.get_category(book_cat_id)
     books = db_controller.get_books_by_category(book_cat_id)
-    
+
     return render_template('showBookCategory.html',
                             current_category = current_category,
                             books = books)
-                            
+
 
 # EDIT A CATEGORY
 @app.route('/books/categories/<int:book_cat_id>/edit', methods=['GET', 'POST'])
 def editBookCategory(book_cat_id):
     category = db_controller.get_category(book_cat_id)
-    
+
     # Redirect to login if user is not logged in.
     if 'username' not in login_session:
         flash('Please login first')
         return redirect('/login')
-        
+
     if request.method == 'GET':
         return render_template('editBookCategory.html', category = category)
     if request.method == 'POST':
-        category = db_controller.update_category(id = category.id, 
+        category = db_controller.update_category(id = category.id,
                                                  name = request.form['name'])
         flash("The category '{}' has been updated.".format(category.name))
         return redirect(url_for('showBookCategory', book_cat_id = category.id))
@@ -314,12 +315,12 @@ def editBookCategory(book_cat_id):
 @app.route('/books/categories/<int:book_cat_id>/delete', methods=['GET', 'POST'])
 def deleteBookCategory(book_cat_id):
     category = db_controller.get_category(book_cat_id)
-    
+
     # Redirect to login if user is not logged in.
     if 'username' not in login_session:
         flash('Please login first')
         return redirect('/login')
-        
+
     if request.method == 'GET':
         return render_template('deleteBookCategory.html', category = category)
     if request.method == 'POST':
@@ -333,12 +334,12 @@ def deleteBookCategory(book_cat_id):
 # ADD A BOOK
 @app.route('/books/add', methods=['GET', 'POST'])
 def addBook():
-    
+
     # Redirect to login if user is not logged in.
     if 'username' not in login_session:
         flash('You must first login before creating a new book')
         return redirect('/login')
-        
+
     if request.method == 'GET':
         return render_template('addBook.html')
     if request.method == 'POST':
@@ -358,7 +359,7 @@ def addBook():
 @app.route('/books/<int:book_id>')
 def showBook(book_id):
     book = db_controller.get_book(book_id)
-    
+
     return render_template('showBook.html', book = book)
 
 
@@ -366,18 +367,18 @@ def showBook(book_id):
 @app.route('/books/<int:book_id>/edit', methods=['GET', 'POST'])
 def editBook(book_id):
     book = db_controller.get_book(book_id)
-    
-    # Redirect to login if user is not logged in.
+
+    # Redirect if user is not logged in or creator of book.
     if 'username' not in login_session:
         flash('Please login first!')
         return redirect('/login')
     if login_session['user_id'] != book.user_id:
         flash('Only the user who created a book can edit it!')
         return redirect(url_for('showBook', book_id = book.id))
-        
+
     if request.method == 'GET':
         return render_template('editBook.html', book = book)
-        
+
     if request.method == 'POST':
         book = db_controller.update_book(
             book_id = book.id,
@@ -395,15 +396,15 @@ def editBook(book_id):
 @app.route('/books/<int:book_id>/delete', methods=['GET', 'POST'])
 def deleteBook(book_id):
     book = db_controller.get_book(book_id)
-    
-    # Redirect to login if user is not logged in.
+
+    # Redirect if user is not logged in or creator of book.
     if 'username' not in login_session:
         flash('Please login first')
         return redirect('/login')
     if login_session['user_id'] != book.user_id:
         flash('Only the user who created a book can edit it!')
         return redirect(url_for('showBook', book_id = book.id))
-        
+
     if request.method == 'GET':
         return render_template('deleteBook.html', book = book)
     if request.method == 'POST':
@@ -415,10 +416,10 @@ def deleteBook(book_id):
 @app.route('/users/<int:user_id>')
 def showUser(user_id):
     user = db_controller.get_user(user_id)
-    
+
     return render_template('showUser.html', user = user)
-    
-    
+
+
 ##### API ENDPOINTS #####
 
 # RETURN JSON FOR AN INDIVIDUAL BOOK
@@ -426,15 +427,15 @@ def showUser(user_id):
 def bookJSON(book_id):
     book = db_controller.get_book(book_id)
     return jsonify(book = book.serialize)
-    
-    
+
+
 # RETURN JSON FOR ALL BOOKS
 @app.route('/books/JSON')
 def booksJSON():
     books = db_controller.get_books()
     return jsonify(books = [book.serialize for book in books])
-    
-    
+
+
 # RETURN JSON FOR AN INDIVIDUAL CATEGORY
 @app.route('/books/categories/<int:book_cat_id>/JSON')
 def categoryJSON(book_cat_id):
@@ -447,21 +448,21 @@ def categoryJSON(book_cat_id):
 def categoriesJSON():
     categories = db_controller.get_categories()
     return jsonify(categories = [cat.serialize for cat in categories])
-    
-    
+
+
 # RETURN JSON FOR AN INDIVIDUAL USER
 @app.route('/users/<int:user_id>/JSON')
 def userJSON(user_id):
     user = db_controller.get_user(user_id)
     return jsonify(user = user.serialize)
-    
-    
+
+
 # RETURN JSON FOR ALL USERS
 @app.route('/users/JSON')
 def usersJSON():
     users = db_controller.get_users()
     return jsonify(users = [user.serialize for user in users])
-    
+
 
 ##### ADMIN ROUTES #####
 @app.route('/admin')
@@ -469,12 +470,7 @@ def adminMain():
     users = db_controller.get_users()
     categories = db_controller.get_categories()
     books = db_controller.get_books()
-    
-    # Redirect to login if user is not logged in.
-    if 'username' not in login_session:
-        flash('Please login first')
-        return redirect('/login')
-        
+
     return render_template('admin.html', users = users, categories = categories, books = books)
 
 if __name__ == '__main__':

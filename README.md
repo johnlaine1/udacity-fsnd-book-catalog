@@ -12,11 +12,11 @@ This project was created and submitted to Udacity as part of the Full Stack Deve
 ## Configuring the Application
 1. In the config.py file, you will find 'host' and 'port' settings, you may have to change these depending on your setup.
 2. In order to setup the Oauth2 authentication, you will need to create a developer acccount at [Facebook](https://developers.facebook.com/) or [Google](https://console.developers.google.com) or both.
-3. You will find example configuration files for Facebook and Google Oauth2 in the oauth_credentials folder.
+3. You will find example configuration files for Facebook and Google Oauth2 in the oauth_credentials folder. After updating the files with your information, remove the .example from the filename.
 
 ## Running the Application
 1. Make sure that you have [Python](https://www.python.org/downloads/) installed.
-2. You will also need to install a few modules with `pip install sqlalchemy flask oauth2client requests` 
+2. You will also need to install a few modules with `pip install sqlalchemy flask oauth2client requests`
 2. Clone the project to your local machine: `https://github.com/johnlaine1/udacity-fsnd-catalog.git`.
 3. cd into the project `cd udacity-fsnd-catalog`.
 4. Enter `python db_setup.py` to create the database, this will add a file called catalog.db to your system.
@@ -30,3 +30,4 @@ This project was created and submitted to Udacity as part of the Full Stack Deve
 3. If you are logged in, there is also an 'Add a Book' link on the navBar that will allow you to create a new book.
 4. You can click on the thumbnail of a book or the 'View' button to see more info about a book.
 5. If you are the creator of a book, you will also see 'Edit' and 'Delete' buttons on the thumbnail and book view page.
+6. There is a dropdown menu on the navBar named Users that will display links to user bio pages.

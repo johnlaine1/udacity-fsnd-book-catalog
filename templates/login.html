@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
 {% block title %}Catalog App | Login{% endblock %}
+
 {% block head %}
       <!--LOAD PRE-REQUISITES FOR GOOGLE SIGN IN -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script src="//apis.google.com/js/platform.js?onload=start"></script>
 {% endblock %}
-
 
 {% block content %}
 {% include 'navBar.html' %}
@@ -29,18 +29,16 @@
             data-approvalprompt="force">
         </span>
     </div>
-    
+
     <!-- FACEBOOK SIGN IN -->
     <div class="col-sm-2 fb-sign-in">
         <span class="fb-signin">
             <fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();">
                 <a href='javascript:sendTokenToServer()'>Sign in</a>
             </fb:login-button>
-        </span>    
-    </div> 
-    
+        </span>
+    </div>
 </div>
-
 
 <div id="result"></div>
 
@@ -70,23 +68,23 @@
              setTimeout(function() {
               window.location.href = "/books";
              }, 4000);
-              
+
           } else if (authResult['error']) {
         console.log('There was an error: ' + authResult['error']);
       } else {
             $('#result').html('Failed to make a server-side call. Check your configuration and console.');
              }
           }
-          
+
       }); } }
     </script>
-    
+
     <!--FACEBOOK SIGN IN -->
     <script>
       window.fbAsyncInit = function() {
       FB.init({
         appId      : '{{ fb_app_id }}',
-        cookie     : true,  // enable cookies to allow the server to access 
+        cookie     : true,  // enable cookies to allow the server to access
                             // the session
         xfbml      : true,  // parse social plugins on this page
         version    : 'v2.2' // use version 2.2
@@ -121,12 +119,12 @@
              setTimeout(function() {
               window.location.href = "/books";
              }, 4000);
-              
+
           } else {
             $('#result').html('Failed to make a server-side call. Check your configuration and console.');
              }
           }
-          
+
       });
         });
       }
