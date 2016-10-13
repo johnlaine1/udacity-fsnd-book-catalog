@@ -16,26 +16,29 @@
     <h2 class="text-center">Please Login</h2>
 </div>
 
-<!-- GOOGLE PLUS SIGN IN-->
-<div class="google-sign-in" id="signInButton">
-    <span class="g-signin"
-        data-scope="openid email"
-        data-clientid="{{ google_client_id }}"
-        data-redirecturi="postmessage"
-        data-accesstype="offline"
-        data-cookiepolicy="single_host_origin"
-        data-callback="signInCallback"
-        data-approvalprompt="force">
-    </span>
-</div>
-
-<!-- FACEBOOK SIGN IN -->
-<div class="fb-sign-in">
-    <button>
-        <fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();">
-            <a href='javascript:sendTokenToServer()'>Login with Facebook</a>
-        </fb:login-button>
-    </button>    
+<div class="row text-center login-buttons">
+       <!-- GOOGLE PLUS SIGN IN-->
+    <div class="col-sm-2 col-sm-offset-4 google-sign-in" id="signInButton">
+        <span class="g-signin"
+            data-scope="openid email"
+            data-clientid="{{ google_client_id }}"
+            data-redirecturi="postmessage"
+            data-accesstype="offline"
+            data-cookiepolicy="single_host_origin"
+            data-callback="signInCallback"
+            data-approvalprompt="force">
+        </span>
+    </div>
+    
+    <!-- FACEBOOK SIGN IN -->
+    <div class="col-sm-2 fb-sign-in">
+        <span class="fb-signin">
+            <fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();">
+                <a href='javascript:sendTokenToServer()'>Sign in</a>
+            </fb:login-button>
+        </span>    
+    </div> 
+    
 </div>
 
 
