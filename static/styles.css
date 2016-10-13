@@ -2,6 +2,12 @@ body {
     margin-top: 50px;
 }
 
+.page-header {
+    background-image: url('images/books_white_space_above.jpg');
+    height: 200px;
+    
+}
+
 .thumbnail {
     height: 400px;
 }
