@@ -33,8 +33,8 @@ def create_categories(categories):
 			{'name': 'CATEGORY_NAME'}
 	"""
 
-    for category in categories:
-        create_category(**category)
+	for category in categories:
+		create_category(**category)
 
 def get_category(id):
 	"""Returns a single category object
@@ -97,8 +97,8 @@ def create_book(name, author, description, price, image, category_id, user_id):
 def create_books(books):
 	"""Create multiple books in the database"""
 
-    for book in books:
-        create_book(**book)
+	for book in books:
+		create_book(**book)
 
 def get_book(book_id):
 	"""Get an individual book from the database"""
@@ -172,7 +172,7 @@ def create_user(name, email = '', picture = '', role = ''):
 def create_users(users):
 	"""Create multiple users in the database"""
 
-    for user in users:
+	for user in users:
 		create_user(**user)
 
 def get_user(user_id):
