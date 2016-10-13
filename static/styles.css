@@ -25,6 +25,7 @@ body {
 .book-display-img,
 .book-display-details{
     margin-top: 25px;
+    margin-bottom: 10px;
 }
 
 .book-display-img img {
@@ -45,4 +46,3 @@ body {
 .login-buttons {
     margin-top: 75px;
 }
-

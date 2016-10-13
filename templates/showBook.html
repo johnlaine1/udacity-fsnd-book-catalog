@@ -9,7 +9,11 @@
 </div>
 <div class="row">
     <div class="book-display-img col-md-2">
-        <img src="{{ book.image }}">
+        {% if book.image %}
+        <img src="{{ book.image }}" alt="book-cover">
+        {% else %}
+        <img src="http://www.thereadersclub.com/templates/images/no_book_cover.jpg" alt="book-cover">
+        {% endif %}
     </div>
     <div class="book-display-details col-md-3">
         <table class="table">
