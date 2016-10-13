@@ -16,12 +16,12 @@ This project was created and submitted to Udacity as part of the Full Stack Deve
 
 ## Running the Application
 1. Make sure that you have [Python](https://www.python.org/downloads/) installed.
-2. You will also need to install a few modules with `pip install sqlalchemy flask oauth2client` 
+2. You will also need to install a few modules with `pip install sqlalchemy flask oauth2client requests` 
 2. Clone the project to your local machine: `https://github.com/johnlaine1/udacity-fsnd-catalog.git`.
 3. cd into the project `cd udacity-fsnd-catalog`.
 4. Enter `python db_setup.py` to create the database, this will add a file called catalog.db to your system.
 5. Enter `python db_populate.py` if you would like to add dummy content to the app (recommended).
-6. Enter `python app.py` to start the server.
+6. Enter `python main.py` to start the server.
 7. Point your browser to localhost:8080
 
 ## Using the Application
