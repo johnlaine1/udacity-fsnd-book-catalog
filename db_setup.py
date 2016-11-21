@@ -50,7 +50,7 @@ class Book(Base):
     created = Column(DateTime, default=datetime.utcnow)
     name =Column(String(80), nullable = False)
     author = Column(String(80))
-    description = Column(String(250))
+    description = Column(String(1000))
     price = Column(String(8))
     image = Column(String(250))
     category_id = Column(Integer,ForeignKey('category.id'))
