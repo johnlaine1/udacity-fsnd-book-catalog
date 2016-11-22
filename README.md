@@ -38,18 +38,18 @@ This project was created and submitted to Udacity as part of the Full Stack Deve
 #### SSH Port = 2200
 #### URL = http://ec2-35-164-131-217.us-west-2.compute.amazonaws.com
 **Software Installed and config changes made**
-1. Create a new user named grader and grant sudo permission by creating /etc/sudoers.d/grader
-1. Add the ~/.ssh/authorized_keys file and changed file and folder permissions
-2. Set the PasswordAuthentication variable in /etc/ssh/sshd_config to no and the Port to 2200
-3. Use ufw to set and enable firewall: allow ssh, www, ntp, 2200/tcp, deny 22
-4. Update and Upgrade all packages
-5. Install apache2, libapache2-mod-wsgi, postgresql, git, pip
-6. Edited the /etc/apache2/sites-available/000-default.conf file: Added WSGIScriptAlias
-7. Added the catalog_app.wsgi file to my catalog project
-8. Ensure that no remote connections are allowed by reviewing /etc/postgresql/9.3/main/pg_hbs.conf
-9. Create a new db user named 'catalog' that has limited permissions
-9. Cloned my catalog project in /var/www/catalog_app
-10. Updated project database settings
+- Create a new user named grader and grant sudo permission by creating /etc/sudoers.d/grader
+- Add the ~/.ssh/authorized_keys file and changed file and folder permissions
+- Set the PasswordAuthentication variable in /etc/ssh/sshd_config to no and the Port to 2200
+- Use ufw to set and enable firewall: allow ssh, www, ntp, 2200/tcp, deny 22
+- Update and Upgrade all packages
+- Install apache2, libapache2-mod-wsgi, postgresql, git, pip
+- Edited the /etc/apache2/sites-available/000-default.conf file: Added WSGIScriptAlias
+- Added the catalog_app.wsgi file to my catalog project
+- Ensure that no remote connections are allowed by reviewing /etc/postgresql/9.3/main/pg_hbs.conf
+- Create a new db user named 'catalog' that has limited permissions
+- Cloned my catalog project in /var/www/catalog_app
+- Updated project database settings
 
 **Third party resources used to complete this project**
 - https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-14-04
