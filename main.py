@@ -4,6 +4,7 @@ import random, string
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
 import httplib2
+import os
 import json
 from flask import make_response
 import requests
@@ -12,6 +13,8 @@ import config
 
 
 app = Flask(__name__)
+
+base_dir = os.path.dirname(__file__)
 
 # ADD VARIABLES TO ALL TEMPLATES
 @app.context_processor
@@ -59,8 +62,9 @@ def fbconnect():
   # Exchange client token for long-lived server-side token with
   # GET /oauth/access_token?grant_type=fb_exchange_token&
   #   client_id={app-id}&client_secret={app-secret}&fb_exchange_token={short-lived-token}
-  app_id = json.loads(open('oauth_credentials/client_secret_fb.json', 'r').read())['web']['app_id']
-  app_secret = json.loads(open('oauth_credentials/client_secret_fb.json', 'r').read())['web']['app_secret']
+  secret_file = os.path.join(base_dir, 'oauth_credentials/client_secret_fb.json')
+  app_id = json.loads(open(secret_file, 'r').read())['web']['app_id']
+  app_secret = json.loads(open(secret_file, 'r').read())['web']['app_secret']
   url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id={}&client_secret={}&fb_exchange_token={}'.format(app_id, app_secret, access_token)
   h = httplib2.Http()
   result = h.request(url, 'GET')[1]
@@ -114,8 +118,8 @@ def fbdisconnect():
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
-    client_id = json.loads(
-        open('oauth_credentials/client_secret_google.json', 'r').read())['web']['client_id']
+    secret_file = os.path.join(base_dir, 'oauth_credentials/client_secret_google.json')
+    client_id = json.loads(open(secret_file, 'r').read())['web']['client_id']
 
     # Validate state token
     if request.args.get('state') != login_session['state']:
@@ -126,7 +130,8 @@ def gconnect():
     code = request.data
     try:
         # Upgrade the authorization code into a credentials object
-        oauth_flow = flow_from_clientsecrets('oauth_credentials/client_secret_google.json', scope='')
+        secret_file = os.path.join(base_dir, 'oauth_credentials/client_secret_google.json')
+        oauth_flow = flow_from_clientsecrets(secret_file, scope='')
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
@@ -233,9 +238,10 @@ def gdisconnect():
 # Create anti-forgery state token
 @app.route('/login')
 def showLogin():
-    google_client_id = json.loads(
-        open('oauth_credentials/client_secret_google.json', 'r').read())['web']['client_id']
-    fb_app_id = json.loads(open('oauth_credentials/client_secret_fb.json', 'r').read())['web']['app_id']
+    secret_file = os.path.join(base_dir, 'oauth_credentials/client_secret_google.json')
+    google_client_id = json.loads(open(secret_file, 'r').read())['web']['client_id']
+    fb_secret_file = os.path.join(base_dir, 'oauth_credentials/client_secret_fb.json')
+    fb_app_id = json.loads(open(fb_secret_file, 'r').read())['web']['app_id']
 
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in xrange(32))
